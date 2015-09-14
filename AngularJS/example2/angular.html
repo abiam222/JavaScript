@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+  <title>AngularJS Form Validation</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://code.angularjs.org/1.2.16/angular.js"></script>
+ <script type="text/javascript" src="js/app.js"></script>
+ <script type="text/javascript" src="js/controllers.js"></script>
+ <script type="text/javascript" src="js/directives.js"></script>
+</head>
+<body ng-controller="MainController">
+  <input type="text" ng-model="message" placeholder="Enter message" />
+  <hello-world></hello-world/>
+  <!--<hello-world message-attr="{{message}}"></hello-world>-->
+  <!--<hello-world message-attr="message"></hello-world>-->
+  <!--<hello-world message-attr="showMessage()"></hello-world>-->
+</body>
+</html>

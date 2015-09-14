@@ -1,0 +1,87 @@
+<!--<DOCTYPE! html>
+<html ng-app>
+<head>
+ <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+<script src="controllers.js"></script>
+</head>
+<body>
+
+ <div ng-controller="HelloController">
+   <input ng-model='greeting.text'>
+    <p>{{greeting.text}}, World</p>
+</div>
+
+</body>
+</html> -->
+
+
+<!--<html ng-app='myApp'>-->
+<html ng-app>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+<script src="controllers.js"></script>
+<title>Your Shopping Cart</title>
+</head>
+<body>
+<body>
+<div ng-controller='CartController'>
+	<h1>Your Order</h1>
+	<div ng-repeat='item in items'>
+		<span>{{item.title}}</span>
+		<input ng-model='item.quantity'>
+		<span>{{item.price | currency}}</span>
+		<span>{{item.price * item.quantity | currency}}</span>
+		<!--<button ng-click="remove($index)">Remove</button>-->
+	</div>
+	<div>Total: {{totalCart() | currency}}</div>
+	<div>Discount: {{bill.discount | currency}}</div>
+	<div>Subtotal: {{subtotal() | currency}}</div>
+</div>
+<!--
+	<form ng-submit="requestFunding()" ng-controller="StartUpController">
+		Starting: <input ng-change="computeNeeded()" ng-model="startingEstimate">
+		Recommendation: {{needed}}
+		<button>Fund my startup!</button>
+	</form>
+-->
+
+<!--
+	<ul ng-controller='StudentListController'>
+		<li ng-repeat='student in students'>
+			<a>{{student.name}}</a>
+		</li>
+	</ul>
+	<button ng-click="insertTom()">Insert</button>
+-->
+<!--
+<div ng-controller='DeathrayMenuController'>-->
+	<!--<button ng-click='toggleMenu()'>Toggle Menu</button>-->
+		<!--ul ng-show='menuState.show'> -->
+		<!--<ul>
+		<li  ng-show='stun.hide' ng-click='stun()'>Stun</li>
+		<li ng-show='disingtegrate.show' ng-click='disingtegrate()'>Disingtegrate</li>
+		<li ng-show='erase.show' ng-click='erase()'>Erase from history</li>
+	</ul>
+</div>-->
+		
+</body>
+</html>
+
+<!--
+<html ng-app='myApp'>
+<body ng-controller='TextController'>
+	<p>{{someText.message}}</p>
+<script>
+	var myAppModule  = angular.module('myApp', []);
+
+	myAppModule.controller('TextController', 
+		function($scope){
+			var someText = {};
+			someText.message = 'You have started your journey.';
+			$scope.someText = someText;
+		});
+</script>
+-->
+
+
+
