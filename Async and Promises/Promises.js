@@ -204,7 +204,7 @@ and invoked.
 All other threads communicate with your code by placing items on the queue.  
 They are not permitted to manipulate any other memory accessible to JS
 
-After the callback is aded ot the queue there is no guarantee how long
+After the callback is added ot the queue there is no guarantee how long
 it will have to wait.  
 
 The JS runtime simply continues in an endless cycle of pulling an item
