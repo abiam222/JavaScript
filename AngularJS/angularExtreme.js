@@ -705,6 +705,9 @@ angular.module(‘testModule’).directive(‘testDirective’, function(){
 	  };
 	});
 
+
+//you can use compile, controller, and link
+
 /*
 **Most of the time, you’ll be working with the link function alone.  This is because most directives are concerned with registering even listeners, watchers, updating the DOM, etc.  
 and this is done inside the link function. Directives such as hg-repeat, which need to clone and repeat the DOM element several times, use the compile function before the link function runs.  This leaded to the question of why two separate functions are needed at all.  Why can’t we just have one? To answer this, we need to understand how directives are compiled by AngularJS
@@ -773,6 +776,14 @@ An example of 1. might be to handle entering/validating credit card separate fro
 An example of 2 might be to move the part that communicates with the credit card backend service to accept/decline payment. Or another example might be a module that talks to the backend to handle the user creation API.
 An example of 3 might be to create some sort of auto-tab functionality that moves the cursor between the 4 edit boxes after the 4 numbers are entered for a credit card.
 Split up your app accordingly.
+
+
+//ADDED LATER:::::
+Directive - DOM Manipulation, Catch DOM events
+directives e.g. are ng-repeat, ng-show
+You can extend HTML, do better than DIV and SPAN tags
+
+
 
 
 */

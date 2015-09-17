@@ -1,34 +1,60 @@
 <!DOCTYPE html>
 <html ng-app="app">
   <head>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-touch.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-animate.js"></script>
-    <script src="docs/grunt-scripts/csv.js"></script>
-    <script src="docs/grunt-scripts/pdfmake.js"></script>
-    <script src="docs/grunt-scripts/vfs_fonts.js"></script>
-   <!-- <script src="/release/3.0.6/ui-grid.js"></script>-->
-        <script data-require="ui-grid@3.0.0RC20" data-semver="3.0.0RC20" src="http://cdn.rawgit.com/angular-ui/ui-grid.info/gh-pages/release/3.0.0-rc.20/ui-grid.js"></script>
-    <!--<script src="/release/3.0.6/ui-grid.css"></script>-->
-    <script src="table.js"></script>
-    <link rel="stylesheet" href="/docs/css/bootstrap-flatly.min.css" />
-  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
-  <link rel="stylesheet" href="/css/site.css" />
-  <link rel="stylesheet" href="//ui-grid.info/release/ui-grid-unstable.min.css" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-touch.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-animate.js"></script>
+   <link rel="stylesheet" type="text/css" href="release/ui-grid.css" /><!-- use new version -->
+   <link rel="stylesheet" type="text/css" href="docs/css/prettify.css" />
+   <link rel="stylesheet" type="text/css" href="docs/css/font-awesome.css" />
+   <link rel="stylesheet" type="text/css" href="docs/css/docs.css" />
+   <link rel="stylesheet" type="text/css" href="docs/css/bootstrap.min.css" />
+   <link rel="stylesheet" type="text/css"  href="docs/css/bootstrap-flatly.min.css" />
+   <link rel="stylesheet" type="text/css" href="docs/css/animations.css" />
+   <link rel="stylesheet" type="text/css" src="docs/css/doc_widgets.css" />
+   <script type="text/javascript" src="docs/grunt-scripts/csv.js"></script>
+   <script type="text/javascript" src="docs/grunt-scripts/marked.js"></script>
+   <script type="text/javascript" src="docs/grunt-scripts/pdfmake.js"></script>
+   <script type="text/javascript" src="docs/grunt-scripts/prettify.js"></script>
+   <script type="text/javascript" src="release/ui-grid.js"></script><!-- use new version -->
+   <script type="text/javascript" src="docs/grunt-scripts/vfs_fonts.js"></script>
+    <script type="text/javascript" src="docs/js/angular-bootstrap-prettify.min.js"></script>
+    <script type="text/javascript" src="docs/js/angular-bootstrap.min.js"></script>
+   <!-- <script type="text/javascript" src="docs/js/angular.min.js"></script>-->
+    <script type="text/javascript" src="docs/js/docs-setup.js"></script>
+    <script type="text/javascript" src="docs/js/docs.js"></script>
+    <script type="text/javascript" src="docs/js/google-code-prettify.js"></script>
+    <script type="text/javascript" src="docs/js/marked.js"></script>
+    <script type="text/javascript" src="table.js"></script>
     <style type="text/css">
-
       .grid {
-  width: 500px;
-  height: 250px;
-}
+         width: 100%;
+         height: 400px;
+          }
     </style>
   </head>
-  <body >
-      <div  ng-controller="MainCtrl as vm">
-      <br>
-      <br>
-      <div id="grid1" ui-grid="vm.gridOptions" class="grid"></div>
+  <body>
+    <div ng-controller="MainCtrl">
+      <button type="button" class="btn btn-success" ng-click="toggleMultiSelect()">Toggle multiSelect</button>  <strong>MultiSelect:</strong> <span ng-bind="gridApi.grid.options.multiSelect"></span>
+      <button type="button" class="btn btn-success" ng-click="toggleRow1()">Toggle Row 0</button>
+      <br/>
+      <br/>
+      <button type="button" class="btn btn-success" ng-click="toggleModifierKeysToMultiSelect()">Toggle modifierKeysToMultiSelect</button>  <strong>ModifierKeysToMultiSelect:</strong> <span ng-bind="gridApi.grid.options.modifierKeysToMultiSelect"> </span>
+      <br/>
+      <br/>
+      <button type="button" class="btn btn-success" ng-disabled="!gridApi.grid.options.multiSelect" ng-click="selectAll()">Select All</button>
+      <button type="button" class="btn btn-success" ng-click="clearAll()">Clear All</button>
+      <button type="button" class="btn btn-success" ng-click="setSelectable()">Set Selectable</button>
+      <button type="button" class="btn btn-success" ng-click="toggleFullRowSelection()">Toggle full row selection</button>
+      <br/>
+    
+      <div ui-grid="gridOptions" ui-grid-selection class="grid"></div>
     </div>
+    <div ng-controller="SecondCtrl">
+      Single selection grid without rowHeader, and allowing rowSelection to be toggled on and off dynamically:
+      <br/>
+      <button type="button" class="btn btn-success" ng-click="toggleRowSelection()">Toggle rowSelection</button>  <strong>rowSelection:</strong> <span ng-bind="gridApi.grid.options.enableRowSelection"></span>
+      <div ui-grid="gridOptions" ui-grid-selection class="grid"></div>
     </div>
   </body>
 </html>
