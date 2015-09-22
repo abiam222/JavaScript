@@ -1,23 +1,12 @@
 (function() { 
 
-angular.module('app', ['components'])
-       .controller('MainController', MainController);
-
-        //locale, scope
-   // BeerController.$inject = ['$scope'];
-
-  function MainController() {
-
-    var vm = this,
-        
-         name;
+angular.module('app', ['calculations'])
+       .controller('MainCtrl', MainCtrl);
 
 
-     vm.min = 44;
+  function MainCtrl() {
 
-    vm.name = "Abiam";
-
-    console.log(vm.min);
+    
 
 };
 })();

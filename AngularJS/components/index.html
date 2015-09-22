@@ -2,17 +2,11 @@
 <html ng-app="app">
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-    <script src="components.js"></script>
+    <script src="views/Calculations/calculations.js"></script>
     <script src="app.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
   </head>
-  <body ng-controller="MainController as vm">
-  {{ vm.min }}
-  <input type="text" ng-model="vm.name">
-    {{ vm.name }}
-  </div>
-    <tabs>
-    {{ vm.max }}
-    </tabs>
+  <body ng-controller="MainCtrl as vm">
+      <tabs1></tabs1>     
   </body>
 </html>
