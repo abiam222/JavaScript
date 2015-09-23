@@ -2,11 +2,22 @@
 <html ng-app="app">
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-    <script src="views/Calculations/calculations.js"></script>
+    <script type="text/javascript" src="views/servicesDemo/mySearchBox.js" ></script>
+    <script type="text/javascript" src="views/servicesDemo/mySearchResults.js" ></script>
     <script src="app.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
   </head>
-  <body ng-controller="MainCtrl as vm">
-      <tabs1></tabs1>     
+  <body>
+    <div ng-controller="CitySearchController " style="margin: 20px">
+      <h1>Search for Cities</h1>
+      <my-search-box 
+        search-text="citySearchText"
+        is-searching="isSearchingForCities">
+      </my-search-box>
+      <my-search-results
+        is-searching="isSearchingForCities"
+        search-results="citySearchResults"
+        search-text="citySearchText"></my-search-results>
+      </div>
   </body>
 </html>

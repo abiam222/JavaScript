@@ -1,20 +1,21 @@
 (function() {
 
 angular.module('calculations', [])
-      .directive('tabs1', tabs1);
+      .directive('tabs', tabs);
 
 
-  function tabs1() {
+  function tabs() {
       var directive = {
-          templateUrl:'views/Calculations/calculations.html',
-           /* template: 
+          //templateUrl:'views/servicesDemo/service.html',
+            template: 
             '<div>' +
              '<label>Im inside my link function</label>' +
-            '</div>', */
+            '</div>', 
           restrict: 'E',
           scope: {
             max: '='
           },
+          transclude: true,
           link: linkFunc,
           controller: BeerController,
           controllerAs: 'vm',
@@ -24,7 +25,7 @@ angular.module('calculations', [])
       return directive;
 
       function linkFunc( scope, el, attr, ctrl ) { 
-            //console.log("HERE");
+            console.log("HERE");
       }
 
   }
@@ -34,19 +35,10 @@ angular.module('calculations', [])
 
   function BeerController($scope) {
       //injecting scope just for comparison
-      var vm = this, //NO vm in variables, technically all have vm
+      var vm = this; //NO vm in variables, technically all have vm
       //here but vm in .html though
       
-      //I don't have to call var in tax cause I called it in the view
-
-
-
-      result = function() {
-        console.log("in the result function");
-        var total;
-          total = tax1 * tax2;
-          console.log(total);
-      }
+     
 
       
   };
