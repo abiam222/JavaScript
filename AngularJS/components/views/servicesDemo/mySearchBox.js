@@ -53,6 +53,7 @@ function mySearchBox() {
             $scope.doSearch = function() {
                 $scope.searchText = $scope.localSearchText;
               };
+
     }
 
 

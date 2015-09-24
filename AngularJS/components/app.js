@@ -8,22 +8,33 @@ angular.module('app', ['searchBox', 'searchResults'])
 	function CitySearchController($scope, $timeout) {
 
 				$scope.$watch('citySearchText', function(citySearchText) {
-					citySearchResults = [];
+					citySearchResults = ['New York', 'London', 'Paris'];
+					found = false;
 
 					if(citySearchText) {
 						$scope.isSearchingForCities = true;
 						$timeout(function() {
 							$scope.isSearchingForCities = false;
-							$scope.citySearchResults = [
-									'New York',
-									'London',
-									'Paris',
-									'Moab'
-							];
-						}, 1000);
+							
+							angular.forEach(citySearchResults, function(value, key) {
+								if(citySearchText == value){
+								   console.log(value +' is Found');
+									found = true;
+								} 
+							});
+								if(!found){
+									console.log("I couldn't find your request");
+								};
+								
+								
+						}, 1000).then(function() {
+ 								$scope.citySearchText = "";
+ 							});
 					} else {
 						$scope.isSearchingForCities = false;
 					}
+						
+
 				});
 	};
 
