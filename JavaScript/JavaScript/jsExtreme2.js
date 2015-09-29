@@ -166,7 +166,7 @@ function User() {
 		};
 
 		
-		//return publicAPI;
+		return publicAPI;
 }
 
 
