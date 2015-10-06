@@ -11,40 +11,52 @@ module.exports = function(Todo,app) {
     // get all todos
     app.get('/api/todos', function(req, res) {
 
-       // ...
-      // db.todo.find();
-       var query = {
-           name: 'Nitro'
-       };
-
-      // Todo.find(query, function(err,todos){ //books is my model from bookModel
-      //if(err)
-        //res.status(500).send(err);
-      //else
-       // res.json(req.todos);
-    //});
-       Todo.find(query, function(err, todos) {
-
+       Todo.find(function(err, todos) {
+          if (err)
+            res.send(err);
            res.json(todos);
-       })
-      // res.send("welcom to my todo api");
-      
+       });
 
     });
 
     // create todo and send back all todos after creation
     app.post('/api/todos', function(req, res) {
 
-      //  ...
-   
-     // res.status(201);
+       //create a todo, info comes from AJAX request from Angular
+     Todo.create({
+      myTodo: req.body.text
+     }, function(err, todos){
+      if(err)
+        res.send(err);
+      });
+
+      //this isn't working
+       Todo.find(function(err, todos) {
+          if (err)
+            res.send(err);
+           res.json(todos);
+       });
+
     });
+
+
 
     // delete a todo
     app.delete('/api/todos/:todo_id', function(req, res) {
 
-       // ...
+        Todo.remove({
+      _id : req.params.todo_id
+    }, function(err, todo){
+      if(err)
+        res.send(err);
 
+      });
+
+         Todo.find(function(err, todos) {
+          if (err)
+            res.send(err);
+           res.json(todos);
+       });
     });
 
     // application -------------------------------------------------------------
