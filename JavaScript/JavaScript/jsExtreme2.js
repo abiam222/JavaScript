@@ -139,7 +139,7 @@ public API that is accessible form the outside
 
 //e.g.
 
-
+/*
 function User() {
 	var username,
 		password;
@@ -176,8 +176,4 @@ fred.login( "fred", "123");
 fred.try2();
 console.log(fred.usr());
 console.log(fred.tryd());
-
-
-
-
-
+*/
