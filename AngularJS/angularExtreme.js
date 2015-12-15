@@ -1289,7 +1289,7 @@ Batarang can give you the scope hierarchy
 */
 
 /*
-Advanced Scpoe Concepts::
+Advanced Scope Concepts::
 
 A watcher monitors model changes and takes action in response.
 The $scope object has a function $watch() that's used to register a watcher.  

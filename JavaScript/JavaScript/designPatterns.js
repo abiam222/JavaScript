@@ -416,3 +416,147 @@ for the things he wished to make public.
 
 
 /////////////////////////////////////////////////////////////////////////
+
+
+// The Singleton Pattern
+
+// the singleton pattern can be implementedby creating a class with a method that
+// creates a new instance of the class if one doesn't exist.  
+
+// A singleton is not an object or class. It's a structure.  
+// Think of how closured variables aren't actually closures - the function
+// scope that prvocides the closure is the closure.  
+
+// var mySingleton = (function(){
+// 	//instance stores a reference to the singleton
+// 	var instance;
+
+// 	function init(){
+// 		//singleton
+
+// 		//private methods and variables
+// 		function privatedMethod() {
+// 			console.log( "I am private" );
+// 		}
+
+// 		var privateVariable = "I'm also private";
+
+// 		var privateRandomNumber = Math.random();
+
+// 		return {
+// 			//Public methods and variables
+// 			publicMethod: function() {
+// 				console.log( "The public can see me!" );
+// 			},
+
+// 			publicProperty: "I am also public",
+
+// 			getRandomNumber: function() {
+// 				return privateRandomNumber;
+// 			}
+// 		};//end return
+// 	};//end init
+
+// 		return {
+// 			//Get the singleton instance if one exists 
+// 			//or crete on if it doesn't
+// 			getInstance: function() {
+// 				if ( !instance ) {
+// 					instance = init();
+// 				}
+
+// 				return instance;
+// 			}
+// 		};
+// })();
+
+
+// var myBadSingleton = (function() {
+// 	//instnace stores a reference to the singleton
+// 	var instance;
+
+// 	function init() {
+// 		//singleton
+// 		var privateRandomNumber = Math.random();
+
+// 		return {
+// 			getRandomNumber: function() {
+// 				return privateRandomNumber;
+// 			}
+// 		};
+// 	};
+
+// 	return {
+// 		//always create a new Singleton instance
+// 		getInstance: function() {
+// 			instance = init();
+
+// 			return instance;
+// 		}
+// 	};
+// })();
+
+// //Usage:
+
+// var singleA = mySingleton.getInstance();
+// var singleB = mySingleton.getInstance();
+// console.log( singleA.getRandomNumber() === singleB.getRandomNumber() ); //true
+
+// var badsingleA = myBadSingleton.getInstance();
+// var badsingleB = myBadSingleton.getInstance();
+// console.log( badsingleA.getRandomNumber() !== badsingleB.getRandomNumber() ); //true
+
+
+
+// 1. There must be exactly one instance of a class, and it must be accessible
+// to clients from a well-known access point.
+// 2. When the sole instance should be extensible by subclassing, and clients
+// should be able to use an extended instance without modifying their code.
+
+
+
+//From the example above if I change something from singleA, it will also
+//change in singleB.  Only one instance of a class.  You can call a million
+//objects and they will all be the same, if you change one, then they all change
+
+
+//e.g.
+var SingletonTester = (function() {
+	//options: an object containing configuratoin options for the singleton
+	//e.g. var options = { name: "test", pointX: 5 };
+	function Singleton( options ) {
+
+		//set options to the optinos supplied 
+		//or an empty obejct if none are provided
+		options = options || {};
+
+		//set some propertie for our singleton
+		this.name = "SingletonTester";
+
+		this.pointX = options.pointX || 6;
+		this.pointY = options.pointY || 10;
+	}
+
+	//our instance holder
+	var instance;
+
+	//an emulation of static variables and methods
+	var _static = {
+		name: "SingletonTester",
+
+		//method for getting an instance.  It returns
+		//a singleton instance of a singleton object
+		getInstance: function( options ) {
+			if ( instance === undefined ) {
+				instance = new Singleton( options );
+			}
+			return instance ;
+		}
+	};
+})();
+
+	var singletonTest = SingletonTester.getInstance({
+		pointX: 5
+	});
+
+	console.log( singletonTest.pointX ); //output 5
