@@ -141,6 +141,16 @@ or asynchronously.  You don't want a series of steps that build on
 one another to run out of order.  
 */
 
+/****!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Callbacks can be  async or sync, depending on the function you call.
+You can use promises to fix the issue with async, and make sure that the calls
+you want to go first, do go first, and the ones you want to go later, do get
+called later. Instead of you not knowing which async callback goes first (assuming you care
+which param gets called first.  You can call an async function and not care on the 
+order that the params get called).
+And http calls are async functions
+*****/
+
 
 //the jquery.ready function can be synchronous or async
 /*$(document).ready(function () {
@@ -291,7 +301,7 @@ loadImage('.../waves.jpg',
 
 
 
-
+//success and error is depricated (i think, its not promises either, i think lol)
 //Promise then and catch
 /*
  var promise = loadImage('/Users/abvelazquez/Desktop/waves.jpg');
@@ -422,9 +432,9 @@ an operation.
  	resolve(Math.sqrt(-1)); //does nothing
  });
 
- //promise.then(function (number) { //that param is what the promise holds
- 	//console.log('The number is ' + number);
- //});
+ promise.then(function (number) { //that param is what the promise holds
+ 	console.log('The number is ' + number);
+ });
 
 console.log(promise);
 console.log(promise.PromiseValue);

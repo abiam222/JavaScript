@@ -133,7 +133,7 @@ myModule.reportMyConfig();
 
 
 /*The module pattern was originally deined as a way to provide both private
-and public encapsulation for calsses in conventional software engineering
+and public encapsulation for classes in conventional software engineering
 
 
 In JS, the Module pattern is used to furhter emulate the concept of classes,
@@ -413,6 +413,9 @@ for the things he wished to make public.
 //in any function the scope is protected so you have to return something.
 //In IFFE you don't put var().blahh you just do var.blahh
 //Object Literal (e.g. var module = {}  )
+//without Buying() youre grabing the whole function(not what it returns)
+//... you need () for that. 
+//(or if it was an object, then the whole object, without () )
 
 
 /////////////////////////////////////////////////////////////////////////

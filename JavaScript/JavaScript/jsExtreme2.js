@@ -177,3 +177,84 @@ fred.try2();
 console.log(fred.usr());
 console.log(fred.tryd());
 */
+
+
+
+
+
+//Scope::::::::::::::::::::::::::::::::::::::::::::
+/*
+Scope is the set of rules that determines whwere and how a variable(identifier)
+can be looked up.  This look-up may be for the purposes of assigning to the 
+variable, which is an LHS(lefthand-side) reference, or it may be for the 
+purpose of retrieving its value, which is an RHS(righthand-side) reference
+
+*/
+
+// function foo( a ) {
+// 	console.log( a + b );
+// }
+
+// var b = 2;
+// foo( 2 );//4
+
+
+
+/*
+For privacy issues instead of the doing the following
+
+function doSomething( a ) {
+	b = a + doSomethingElse( a * 2 );
+	console.log( b * 3 );
+}
+
+function doSomethingElse( a ) {
+	return a - 1;
+}
+
+var b;
+
+doSomething( 2 );
+
+do the following code instead
+
+function doSomething( a ) {
+	function doSomethingElse( a ) {
+		return a - 1;
+	}
+	var b;
+	b =  a + doSomethingElse( a * 2 );
+	console.log( b * 3 );
+}
+
+doSomething( 2 );
+
+*/
+
+/*
+Another benefit of "hiding" variables and functions inside a scope is to
+avoid unintended collision between two different identifiers witht the
+same name but different intended usages.  Collision results often in 
+unexpected overwriting of values
+*/
+
+// function foo() {
+// 	function bar( a ) {
+// 		 i = 3;//makes i global within foo, can change with "var i=3"
+// 		console.log( a + i );
+// 	}
+
+// 	for ( var i = 0; i < 10; i++ ) {
+// 		bar( i * 2 );
+// 	}
+// }
+
+// foo();
+
+//this causes an infinite loop bacause "i" in bar is actually 3
+
+
+
+
+
+
