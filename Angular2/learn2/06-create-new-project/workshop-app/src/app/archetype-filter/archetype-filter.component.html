@@ -1,11 +1,40 @@
 <div style="border: 3px solid blue; margin: 10px; padding: 10px; border-radius: 10px;">
   <h2>Choose your Archetype</h2>
 
-  <p>
-    <input [(ngModel)]="filterCriteria.partialName" placeholder="Search Archetypes">
-  </p>
+  <div>
+    <input
+      placeholder="Search Archetypes"
+      [(ngModel)]="filterCriteria.partialName"
+      (keyup)="emitUpdateEvent()"
+    >
+  </div>
 
-  <p>User entered search string: {{ filterCriteria.partialName }}</p>
+  <hr>
+
+  <div>
+    <strong>Sex:</strong>
+    <button [class.selectedCriteria]=" filterCriteria.sex === 'female' " (click)="setSex('female')" > Female </button>
+    <button [class.selectedCriteria]=" filterCriteria.sex === 'male'   " (click)="setSex('male')"   > Male   </button>
+    <button [class.selectedCriteria]=" filterCriteria.sex === ''       " (click)="setSex('')"       > All    </button>
+
+    &nbsp; &nbsp;
+
+    <strong>Race:</strong>
+    <button [class.selectedCriteria]=" filterCriteria.race === 'human' " (click)="setRace('human')"  > Human </button>
+    <button [class.selectedCriteria]=" filterCriteria.race === 'droid' " (click)="setRace('droid')"  > Droid </button>
+    <button [class.selectedCriteria]=" filterCriteria.race === ''      " (click)="setRace('')"       > All   </button>
+  </div>
+
+  <hr>
+
+  <div *ngIf="
+      filterCriteria.partialName !== '' ||
+      filterCriteria.sex         !== '' ||
+      filterCriteria.race        !== ''
+  ">
+    User entered the following filter criteria:
+    <pre>{{ filterCriteria | json }}</pre>
+  </div>
 
   <p>
 </div>

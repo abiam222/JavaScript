@@ -1,5 +1,21 @@
 <div style="border: 3px solid blue; margin: 10px; padding: 10px; border-radius: 10px;">
-  <p>
-    character-name works!
-  </p>
+
+  <form [formGroup]="characterNameFormGroup">
+
+    <input
+      placeholder="Character name"
+      [(ngModel)]="characterName"
+      (keyup)="onNameChange()"
+      formControlName="characterNameControl"
+    >
+
+    <div *ngIf="
+        characterNameFormGroup.controls.characterNameControl.touched &&
+        characterName === ''
+    ">
+      A character name is required
+    </div>
+
+  </form>
+
 </div>

@@ -1,4 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  OnInit
+} from '@angular/core';
+
+interface IFilterCriteria {
+  partialName : string,
+  race        : string,
+  sex         : string
+}
 
 @Component({
   moduleId: module.id,
@@ -8,11 +19,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ArchetypeFilterComponent implements OnInit {
 
-  filterCriteria: { partialName: string } = { partialName: '' };
+  @Output() filterCriteriaUpdated = new EventEmitter();
+
+  filterCriteria: IFilterCriteria = {
+    partialName : '',
+    race        : '',
+    sex         : ''
+  };
 
   constructor() {}
 
   ngOnInit() {
+  }
+
+  setRace(race:string) {
+    this.filterCriteria.race = race;
+    this.emitUpdateEvent();
+  }
+
+  setSex(sex:string) {
+    this.filterCriteria.sex = sex;
+    this.emitUpdateEvent();
+  }
+
+  emitUpdateEvent() {
+    this.filterCriteriaUpdated.emit(this.filterCriteria);
   }
 
 }

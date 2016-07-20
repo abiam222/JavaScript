@@ -1,0 +1,9 @@
+button {
+  border-radius: 15px;
+  padding: 5px;
+}
+
+button.colorActive {
+  background-color: blue;
+  color: white;
+}

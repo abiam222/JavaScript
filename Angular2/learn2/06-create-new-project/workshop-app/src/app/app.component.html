@@ -1,9 +1,14 @@
-<h1>
-  {{title}}
-</h1>
+<h1>Star Wars Character Creator</h1>
 
-<app-character-name></app-character-name>
+<app-character-name
+  (characterNameChanged)="logNameChange($event)"
+></app-character-name>
 
-<app-archetype-filter></app-archetype-filter>
+<app-archetype-filter
+  (filterCriteriaUpdated)="logCriteriaChange($event)"
+></app-archetype-filter>
 
-<app-archetype-list></app-archetype-list>
+<app-archetype-list
+  [swPeople]="bigListOfStarWarsPeople"
+  (archetypeChosen)="logArchetypeChosen($event)"
+></app-archetype-list>
