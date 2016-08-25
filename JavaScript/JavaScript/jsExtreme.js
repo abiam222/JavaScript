@@ -8,7 +8,7 @@ console.log("hello,world");
 };
 */
 
-
+//==================================OBJECTS===================================================
 var empty_object = {};
 
 var stooge = {
@@ -42,7 +42,6 @@ var flight = {
 
 
 //prototype
-
 if(typeof Object.create !== 'function'){
 	Object.create = function(o){
 		var F = function() {};
@@ -119,7 +118,7 @@ for(i=0;i<properties.length;i+=1){
 //the chance of bad interactions with other applications, widgets, or libraries
 
 
-
+//========================================FUNCTIONS================================================
 
 //Functions in JS are objects
 //Objects are collections of name/value pairs having a hidden link
@@ -181,7 +180,7 @@ myObject.double();
 
 
 
-
+//==================================CONSTRUCTORS==================================================
 //Constructor Invocation Pattern
 //JS is a prototypal inheritance language, that means that objects
 //can inherit properties directly from other objects.  The language is class-free
@@ -242,7 +241,7 @@ document.writeln(Quo.prototype.get_status.apply(statusObject));
 
 //Return
 //The "return" statement can be used to cause the function to return early.
-//WHen "return" is executed, the function returns immediately withoug executing the 
+//Whsen "return" is executed, the function returns immediately withoug executing the 
 //remaining statements
 //A function always returns a value.  If the "return" value is not specified, then "undefined" is returned
 //If the function was invoked with the "new" prefix and the return value is not an object, then "this"(new object) is returned
@@ -431,12 +430,12 @@ return function(){
 
 //The general pattern of a module is a function that defines private variables
 //and functions; creates privileged functions which, through closure, will
-//have access to the private variables and funciotns; and taht returns the privileged
-//functions or stores them in an accessible palce
+//have access to the private variables and functions; and that returns the privileged
+//functions or stores them in an accessible place
 
 //Us of the Module pattern can eliminate the use of global variables(not good)
-//it promotes informatoin hiding and other good design practices.  It is very
-//effective in encapsulation applicaitns and other singletons.  
+//it promotes information hiding and other good design practices.  It is very
+//effective in encapsulation applications and other singletons.  
 
 //it can also be used to produce objects that are secure.
 
@@ -536,16 +535,7 @@ document.writeln(add1(6)); //7
 
 
 
-
-
-
-
-
-
-
-
-
-
+//============================================INHERTITANCE========================================================
 
 
 //Inheritance
@@ -698,7 +688,7 @@ var myObject = maker({
 
 //prototypal
 //in a purely prototypal pattern, we dispanse with classes.  We focus instead on the objects
-//PRototypal inheritance is conceptually simpler than classical inheritance:a
+//Prototypal inheritance is conceptually simpler than classical inheritance:a
 //new object can inherit the properties of an old object.  
 //you can make a useful object.  you can then make many more object that are like that one.
 //the classification process of breaking an application down into a set of nested abstract classes can be completely avoided
@@ -713,13 +703,14 @@ var myMammal = {
 	}
 };
 /*
+var happy = 7
 var myProblem = function(){
 	var value = 4;
 	var happy = 5;
 
 
 	 var physics = function(){
-		return this.value;
+		return value;
 	}
 	physics();
 	return{
@@ -728,6 +719,8 @@ var myProblem = function(){
 	
 };
 */
+
+//=======================================OTHER OBJECT AND INHERITANCE============================================
 
 //once we have an object taht we like, we can make more instances with the Object.create method
 //we can then customize the new instances

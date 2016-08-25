@@ -9,6 +9,6 @@
 ></app-archetype-filter>
 
 <app-archetype-list
-  [swPeople]="bigListOfStarWarsPeople"
+  [swPeople]="swPeople$ | async"
   (archetypeChosen)="logArchetypeChosen($event)"
 ></app-archetype-list>

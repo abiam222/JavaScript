@@ -10,3 +10,8 @@ import {Component} from '@angular/core';
   // Note the lack of directives: also.
 })
 export class AppComponent { }
+
+/*
+THIS FOLDER MIGHT HAVE DEPRECATED CODE
+DONT USE
+*/

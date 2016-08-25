@@ -3,13 +3,12 @@
   <h3 [innerText]="archetype.name"></h3>
 
   ({{ archetype.race }} - {{ archetype.sex }})
+  Born: {{ archetype.birthday }}
+  Height: {{ archetype.height | inchesToFeet }}ft
 
-  <div>
-    Born: {{ archetype.birthday }}
-    Height: {{ archetype.height | inchesToFeet }} feet
-  </div>
-
-  <button (click)="chooseArchetype(archetype)">
+  <button (click)="chooseArchetype(archetype)"
+    style="float: right;"
+  >
     Choose
   </button>
 
