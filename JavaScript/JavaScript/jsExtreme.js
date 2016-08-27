@@ -320,6 +320,7 @@ var myObject = function(){
 //It would be more useful if the status property were private.  So, lets define a different kind of quo
 //function to do that
 
+//MAKING CONSTRUCTOR 1
 var quo = function(status){
 	return{
 		get_status: function(){
@@ -334,6 +335,21 @@ var myQuo = quo("amazed");
 
 
 document.writeln(myQuo.status);
+
+
+//MAKING CONSTRUCTOR 2
+function Quo(status) {
+	this.get_status = function() {
+		return status;
+	}
+}//this is a constructor 
+
+//or 
+var Quo = function(status) {
+	this.get_status = function() {
+		return status;
+	}
+}
 
 //sets status as private
 //hence using "quo('amaxed') set 

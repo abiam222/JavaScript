@@ -141,8 +141,8 @@ public API that is accessible form the outside
 
 /*
 function User() {
-	var username,
-		password;
+	var username = 'abiam',
+		password = '2333';
 
 		function doLogin( user, pw ) {
 
@@ -159,10 +159,15 @@ function User() {
 			return this.username;
 		}
 
+		function getOtherName() {
+			return username; //this is global username, not this.username(objects username)
+		}
+
 		var publicAPI = {
 			login: doLogin,
 			usr :  getName,
-			try2 : tryd
+			try2 : tryd,
+			getOtherName: getOtherName
 		};
 
 
