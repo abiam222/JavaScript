@@ -1017,3 +1017,126 @@ console.log( obj1.a );//2
 var baz = new bar( 3 );
 console.log( obj1.a );//2
 console.log( baz.a ); //3
+
+//
+//
+//
+//
+//
+//========================================
+//creating objects
+
+// var myName = {
+// 	firstName: "Abiam",
+// 	lastName: "Velazquez"
+// }
+
+//how do I call this?!?!
+
+
+// var myName = {
+// 	"firstName": "Abiam",
+// 	"lastName": "Velazquez"
+// }
+
+//how do I call (access) this?!?!
+
+// var myName = Object.create(null);
+// console.log(myName)
+
+
+//new Object()
+// var myName = new Object(null);
+// console.log(myName)
+
+
+//new from constructor
+
+
+
+
+// console.log(myName.firstName)
+// console.log(myName["firstName"])
+
+
+//how do I put data (instead of like in the object) in the object?!?!?!
+
+//myName.name = "Abiam"
+//myName["name"] = "Abiam"
+
+
+//the ' this ' is for object reference
+
+
+
+//this vs global(outside of the object)
+//don't use 'this' in function, it won't lead anywhere (unless its a constructor)
+
+// var name = "Nick";
+// var myName {
+// 	name: 'Abiam',
+// 	lastName: 'Velazquez',
+// 	start: function() {
+// 		var name = "Melissa"
+// 		console.log( name )
+// 	}
+// }
+
+
+
+function Start() {
+	this.name = 'Abiam'
+}
+
+//JUST BASICSSSS!!!!!
+//functions in objects
+//objects in objects
+//arrays in objects
+//LOOK AT jsExtreme
+
+
+//=========================FUNCTION=================================
+
+//Anonymous    var x = function () {}
+//IFFE
+(function(){
+
+})(); //calls function right aways immediately invoked function expression
+
+//var name = function() {}
+//function name() {}
+
+//returning in function (they will become what they return )
+
+//passing parameters to functions vs global (just regular no this)
+
+
+//**All variables in a function(objects) are private.  Only available within
+// that functions scope.
+// (In object literal call, you need to specify with 'this' to grab current
+// class scope.)
+
+
+
+//=================MIX AND MATCH FUNCTIONS AND OBJECT==================
+
+//DON"T GET CONFUSEDDDDDD
+
+
+////function returning an object AND constructor
+
+
+//this and global within a function
+
+
+//constructor (lets do this last)
+//function returning an object
+
+function example() {
+	var i=0;
+
+	return {
+		i : 5,
+		or : i
+	}
+}
