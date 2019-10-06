@@ -1,0 +1,272 @@
+<html>
+  <body>
+
+    <!-- <div id="app">
+      {{ message }}
+    </div> -->
+
+    <!-- <div id="app-2">
+      <span v-bind:title="message">
+        Hoever your mouse over me for a few seconds
+        to see my dynamically bound title!
+      </span>
+    </div> -->
+
+    <!-- <div id="app-3">
+      <span v-if="seen">Now you see me</span>
+    </div> -->
+
+    <!-- <div id="app-4">
+      <ol>
+        <li v-for="todo in todos">
+          {{ todo.text }}
+        </li>
+      </ol>
+    </div> -->
+
+    <!-- <div id="app-5">
+      <p>{{ message }}</p>
+      <button v-on:click="reverseMessage">Reverse Message</button>
+    </div> -->
+
+    <!-- <div id="app-6">
+      <p>{{ message }}</p>
+      <input v-model="message">
+    </div> -->
+
+    <!-- <div id="app-7">
+      <ol>
+        <todo-item
+          v-for="item in groceryList"
+          v-bind:todo="item"
+          v-bind:key="item.id"
+        ></todo-item>
+      </ol>
+    </div> -->
+
+   <!-- <div id="app-8">
+    <p>Original Message: "{{ message }}"</p>
+    <p>Computed reversed message: "{{ reversedMessage }}"</p>
+   </div> -->
+
+   <div id="watch-example">
+     <p>
+       Ask a yes/no question:
+       <input v-model="question">
+     </p>
+     <p>{{ answer }}</p>
+   </div>
+  
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+    <script>
+      // var app = new Vue({
+      //   el: '#app',
+      //   data: {
+      //     message: 'Hello Vue!'
+      //   }
+      // })
+      // var app2 = new Vue({
+      //   el: '#app-2',
+      //   data: {
+      //     message: 'You loaded this page on' + new Date().toLocaleString()
+      //   }
+      // })
+      // var app3 = new Vue({
+      //   el: '#app-3',
+      //   data: {
+      //     seen: true
+      //   }
+      // })
+      // var app4 = new Vue({
+      //   el: '#app-4',
+      //   data: {
+      //     todos: [
+      //       { text: 'Learn JavaScript' },
+      //       { text: 'Learn Vue' },
+      //       { text: 'Build something awesome' }
+      //     ]
+      //   }
+      // })
+      // var app5 = new Vue({
+      //   el: '#app-5',
+      //   data: {
+      //     message: 'Hello Vue.js!'
+      //   },
+      //   methods: {
+      //     reverseMessage: function() {
+      //       this.message = this.message.split('').reverse().join('')
+      //     }
+      //   }
+      // })
+        // var app6 = new Vue({
+        //   el: '#app-6',
+        //   data: {
+        //     message: 'Hello Vue!'
+        //   }
+        // })
+
+        // Vue.component('todo-item', {
+        //   props:['todo'],
+        //   template: '<li>{{ todo.text }}</li>'
+        // })
+        // var app7 = new Vue({
+        //   el: '#app-7',
+        //   data: {
+        //     groceryList: [
+        //       { id: 0, text: 'Vegetables' },
+        //       { id: 1, text: 'Cheese' },
+        //       { id: 2, text: 'Whatever else humans are supposed to eat'}
+        //     ]
+        //   }
+        // })
+
+        /*Start*/
+          // var data = { a: 1 }
+          // var vm = new Vue({
+          //   el: '#example',
+          //   data: data
+          // })
+
+          // vm.$data === data // true
+          // vm.$el === document.getElementById('example') //true
+
+          // //console.log(data)
+          // //console.log(vm.$data)
+          // //$watch is an instance method
+          // vm.$watch('a', function (newValue, oldValue) {
+          //   //This callback will be called when 'vm.a' changes
+          //  })
+        /*End*/
+
+        /*Start*/
+            // new Vue({
+            //   data: {
+            //     a: 1
+            //   },
+            //   created: function() {
+            //     //`this` points to the vm instance
+            //     console.log('a is: ' + this.a)
+            //   }
+            // })
+            // // => "a is: 1"
+
+            // var obj = {
+            //   name: 'Abiam',
+            //   nameFunc: function() {
+            //     console.log('my other name is ' + this.name)
+            //   },
+            //   nameFunc2: () => {
+            //     name = 'Nick'
+            //     console.log('my other name is ' + this.name)
+            //   }
+            // }
+
+            // console.log(obj.name)
+            // console.log(obj.nameFunc())
+            // console.log(obj.nameFunc2())
+        /*End*/
+
+        // var app8 = new Vue({
+        //   el: '#app-8',
+        //   data: {
+        //     message: 'Hello'
+        //   },
+        //   computed: { //computed proerties are cached based on their reactive dependencies
+        //     //*I believe it won't update reactively. Method invocation will always
+        //     //run the function whever a re-render happens 
+        //     //But you might need this if for example you have a huge array (you
+        //     //might just want to cache it)
+        //     reversedMessage: function() {
+        //       return this.message.split('').reverse().join('')
+        //     }
+        //   }
+        //   //methods: {}
+        // })
+
+
+        /*
+        <!-- Since there is already a rich ecosystem of ajax libraries    -->
+        <!-- and collections of general-purpose utility methods, Vue core -->
+        <!-- is able to remain small by not reinventing them. This also   -->
+        <!-- gives you the freedom to use what you're familiar with.      -->
+        */
+
+        const watchExampleVM = new Vue({
+          el: '#watch-example',
+          data: {
+            question: '',
+            answer: 'I cannot give you an answer until you ask a question!'
+          },
+          watch: {
+            //whenver question changes, this function will run
+            question: function(newQuestion, oldQuestion) {
+              this.answer = 'Waiting for you to stop typing...'
+              this.debouncedGetAnswer()
+            }
+          },
+          created: function() {
+            //a lodash function
+            this.debouncedGetAnswer = _.debounce(this.getAnswer, 500)
+          },
+          methods: {
+            getAnswer: function() {
+              if (!this.question.includes('?')) {
+                this.answer = 'Questions usually contain a question mark. ;-)'
+                return
+              }
+              this.answer = 'Thinking...'
+              const vm = this 
+              axios.get('https://yesno.wtf/api')
+                .then(function(response){
+                  vm.answer = _.capitalize(response.data.answer)
+                })
+                .catch(function(error){
+                  vm.answer = 'Error! Cound not read the API' + error
+                })
+            }
+          }
+        })
+    </script>
+  </body>
+</html>
+
+<!--
+  Vue is reactive (*in my own terms though Idk if this is what happening
+  it is passing by reference)
+
+  Instance Lifecycle Hooks: 
+  -created
+  -mounted
+  -updated
+  -destroyed
+  All lifecycle hooks are calle dwith ther 'this' context ponting to the Vue instance 
+  invoking it
+  **Don't use arrow functions on an options prpoerty or callback (since the arrow function
+  doesn't have this, then this will be treated as any other variable and lex look-up
+  through parent scopes until found) 
+
+  The actual lifecycle is (in order)
+  new Vue()
+  beforeCreate
+  created
+  beforeMount
+  mounted
+  beforeUpdate
+  updated
+  beforeDestroy
+  destroyed
+
+  Vue uses an HTML based tempalte syntax that allows you to declaratively bind the rendered DOM
+  to the underling Vue instances data. 
+  Under the hood, Vue compiles the templates into Virtual DOM render functions. Combined
+  with the reactivity sytem, Vue is able to intelligently figure out the minimal number 
+  of components to re-render and apply the minimal amount of DOM manipulations when 
+  the app state changes. 
+
+  While computed properties are more appropriate in most cases, there are times when a custom
+  watcher is necessary. Thats' why Vue rpovides a more generic way to react to data changes through the 
+  watch option. This is most useful when you want to perform asyn or expensive operations in
+  response to changing data 
+-->

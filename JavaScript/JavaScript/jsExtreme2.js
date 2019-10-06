@@ -36,7 +36,7 @@ them.
 Many different ways to call an object
 
 1. Arrays
-2. Literal Notation
+2. Literal Notation aka { ... }
 3. new Object()
 4. Object.create()
 5. Constructor function (use 'this')

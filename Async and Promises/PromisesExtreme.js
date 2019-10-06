@@ -1,4 +1,64 @@
-/*var async = true;
+//https://angular.io/guide/comparing-observables
+//https://stackoverflow.com/questions/37364973/what-is-the-difference-between-promises-and-observables
+//https://tylermcginnis.com/async-javascript-from-callbacks-to-promises-to-async-await/
+
+//JS is single threaded async (not really asyn though)
+/*
+**Node is the JS engine. So the event loop runs the same
+
+events, callback
+timeout, reading DB, reading/writing files
+API calls 
+
+A very interesting property of the event loop model is that JavaScript, 
+unlike a lot of other languages, never blocks. Handling I/O is typically 
+performed via events and callbacks, so when the application is waiting for
+ an IndexedDB query to return or an XHR request to return, it can still 
+ process other things like user input. 
+
+ /////
+
+
+JavaScript is always synchronous and single-threaded. 
+If you're executing a JavaScript block of code on a page then 
+no other JavaScript on that page will currently be executed.
+
+JavaScript is only asynchronous in the sense that it can make, 
+for example, Ajax calls (our user interactions, events). The Ajax call will stop executing and other 
+code will be able to execute until the call returns (successfully or 
+otherwise), at which point the callback will run synchronously. 
+No other code will be running at this point. It won't interrupt 
+any other code that's currently running.
+
+JavaScript timers operate with this same kind of callback.
+
+Describing JavaScript as asynchronous is perhaps misleading. 
+It's more accurate to say that JavaScript is synchronous and
+ single-threaded with various callback mechanisms.
+
+jQuery has an option on Ajax calls to make them synchronously
+(with the async: false option). Beginners might be tempted
+to use this incorrectly because it allows a more traditional
+programming model that one might be more used to.
+The reason it's problematic is that this option will block all
+JavaScript on the page until it finishes, including all event
+handlers and timers.
+
+///////
+
+To someone who really understands how JS works this question might seem off, however most people who use JS do not have such a deep level of insight (and don't necessarily need it) and to them this is a fairly confusing point, I will try to answer from that perspective.
+
+JS is synchronous in the way its code is executed. each line only runs after the line before it has completed and if that line calls a function after that is complete ect...
+
+The main point of confusion arises from the fact that your browser is able to tell JS to excute more code at anytime (simmlar to how you can excute more JS code on a page from the console). As an example JS has Callback functions who's purpose is to allow JS to BEHAVE asynchronously so further parts of JS can run while waiting for a JS function that has been executed (I.E. a GET call) to return back an answer, JS will continue to run until the browser has an answer at that point the event loop (browser) will execute the JS code that calls the callback function.
+
+Since the event loop (browser) can input more JS to be executed at any point in that sense JS is asynchronous (the primary things that will cause a browser to input JS code are timeouts, callbacks and events)
+
+I hope this is clear enough to be helpful to somebody.
+*/
+
+/*
+var async = true;
 var xhr = new XMLHttpRequest();
 xhr.open('get','data.json', async);
 xhr.send();
@@ -17,8 +77,8 @@ function listener(){
 
 xhr.addEventListener('load', listener);
 xhr.addEventListener('error', listener);
-
 */
+ 
 
 
 //CallBacks:::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -29,29 +89,75 @@ e.g.
 */
 
 
-var cities = [ 'Tokyo', 
-				'London', 
-				'Boston', 
-				'Berlin', 
-				'Chicago',
-				'New York'];
+//callback is a function that is to be executed after another function has finished 
+//executing — hence the name ‘call back’.
+
+//More complexly put: In JavaScript, functions are objects. Because of this, 
+//functions can take functions as arguments, and can be returned by other functions. 
+//Functions that do this are called higher-order functions. Any function that is passed
+//as an argument is called a callback function
+
+//https://codeburst.io/javascript-what-the-heck-is-a-callback-aba4da2deced
+
 /*
-cities.forEach(function callback(city){
-	console.log(city);
-});
+Hence callback
+1. Function that is executed after another function has finished executing
+2. Any function that is passed as an argument
+3. Callbacks are a way to make sure certain code doesn’t execute until other code has already finished execution. 
+(because JS is event driven and it doesn't wait for code that needs more time to be executed)
+(therefore this brings out the async and sync because if you don't have a callback it will run async else sync)
+e.g that's why in the below example "forEach" has a call back, if not we wouldn't get out
+data until we were finished and other code could have run after we made our call but our method wasn't
+displayed 
 */
+
+// var cities = [ 'Tokyo', 
+// 				'London', 
+// 				'Boston', 
+// 				'Berlin', 
+// 				'Chicago',
+// 				'New York'];
+
+// var cities2 = [ 'Los Angeles'];
+
+
+// cities.forEach(function callback(city){
+// 	console.log(city);
+// });
+// for(var i=0;i<cities.length;i++) {
+// 	console.log( cities[i] )
+// }
+
 /*Whether your callbacks are inline functions or predefined is a matter of 
 choice.  As long as you have a reference to a function, you can use 
 it as a callback */
 
 
 //Passing a callback as a predefined function
-function callback(city){
-	console.log(city);
-}
+// function callback(city){
+// 	console.log(city);
+// }
+// function citiesLoop(c) {
+// 	setTimeout(function(){
+// 		for (var i=0;i<c.length;i++){
+// 			console.log(c[i])
+// 		}
+// 	}, 500)
+	
+// }
 
-cities.forEach(callback);
+// function citiesLoop2(c) {
+// 	for (var i=0;i<c.length;i++){
+// 		console.log(c[i])
+// 	}
+// }
 
+//cities.forEach(callback);
+//cities2.forEach(callback); //also this code is shorter then doing call back twice too
+
+//citiesLoop(cities);
+//citiesLoop2(cities2);//runs first because there is no callback (forEach has callback,
+//that's why it always runs in order)
 
 
 /*
@@ -135,10 +241,14 @@ console.assert(timestamp == contents);
 
 
 /*
-******When you pass a callback to a function it's important
+******
+When you pass a callback to a function it's important
 to know whether the callback will be invoked synchronously
 or asynchronously.  You don't want a series of steps that build on 
-one another to run out of order.  
+one another to run out of order.
+
+forEach isn't async, though it has a callback. But looks like an async since
+JS is event-driven, and you make a scenario like I did above 
 */
 
 /****!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -149,6 +259,12 @@ called later. Instead of you not knowing which async callback goes first (assumi
 which param gets called first.  You can call an async function and not care on the 
 order that the params get called).
 And http calls are async functions
+
+Also with callbacks you can run into callback hell, and promises makes this 
+much easier to handle and even read
+
+**Even though JS is syncronous by default it is event-driven so it doesn't wait for other stuff to finish
+first, it something takes longer it keeps running other stuff
 *****/
 
 
@@ -252,6 +368,8 @@ var async = true,
 
 /*
 Promises:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+//Promises comes from Async callbacks (not sync callbacks)
 
 The biggest challenge with nontrivial amounts of async JS
 is mangin execution order through a series of steps and 
@@ -426,23 +544,113 @@ an operation.
 
 //The state of a promise never changes after it is fulfilled or rejected
 
- var promise = new Promise(function (resolve, reject) {
- 	resolve(Math.PI);
- 	reject(0);				//does nothing
- 	resolve(Math.sqrt(-1)); //does nothing
- });
+//  var promise = new Promise(function (resolve, reject) {
+//  	resolve(Math.PI);
+//  	reject(0);				//does nothing
+//  	resolve(Math.sqrt(-1)); //does nothing
+//  });
 
- promise.then(function (number) { //that param is what the promise holds
- 	console.log('The number is ' + number);
- });
+//  promise.then(function (number) { //that param is what the promise holds
+//  	console.log('The number is ' + number);
+//  });
 
-console.log(promise);
-console.log(promise.PromiseValue);
+// console.log(promise);
+// console.log(promise.PromiseValue);
 
  //console output it
  //3.14...
 
 
 
+ /////////////////////////
+ /*
+Async / Await
+
+Async functions return a promise 
 
 
+ */
+
+
+/*
+Promises vs Observables
+
+Promise
+A Promise handles a single event when an async operation completes or fails.
+Note: There are Promise libraries out there that support cancellation, but ES6 Promise doesn't so far.
+Observable
+An Observable is like a Stream (in many languages) and allows to pass zero or more events where the callback is called for each event.
+Often Observable is preferred over Promise because it provides the features of Promise and more. With Observable it doesn't matter if you want to handle 0, 1, or multiple events. You can utilize the same API in each case.
+Observable also has the advantage over Promise to be cancelable. If the result of an HTTP request to a server or some other expensive async operation isn't needed anymore, the Subscription of an Observable allows to cancel the subscription, while a Promise will eventually call the success or failed callback even when you don't need the notification or the result it provides anymore.
+Observable provides operators like map, forEach, reduce, ... similar to an array
+There are also powerful operators like retry(), or replay(), ... that are often quite handy.
+
+
+Promises Angular 1
+
+https://tylermcginnis.com/async-javascript-from-callbacks-to-promises-to-async-await/
+
+
+If you want to call an HTTP service you will get a Promise.
+
+In your controller you will
+
+variable.getFunc(). //get Promise
+	.then( function (data) {  //you will pass a callback to the Promise
+	//do data stuff after data has been generated
+}) 
+
+In your service 
+
+return $http.get(url)  //Retrieving url endpoint which also passes over a Promise. This function returns promise
+.then(function(data) {
+	//do stuff
+}
+.catch(function(error){
+	//if error
+}
+
+.then and .catch will return a new promise 
+
+Angular 2 (observable and subscribe)
+
+Make function type observable
+
+return this._http.get(url)
+	.map((res:Response) => //do whatever )
+	.catch((error: any) => Observable.throw(err.json().error));
+
+
+In component
+
+this._service.function().
+	.subscribe(  //subscribe 
+	res => //do something  , you can add (res) if you want
+	err=> //error
+	() => //optional, if you want to do something else
+)
+
+
+Node (async and promise) (old school promise too) 
+
+try {
+    const groceriesPromise = fetch("http://groceries:3003/getGroceries"); //returns a promise
+    const ratingsPromise = fetch("http://groceries:3003/getGroceryRatings");   //get URL
+    const promises = [groceriesPromise, ratingsPromise]; //get Promise together
+    const [groceriesResponse, ratingsResponse] = await Promise.all(promises);  //wait for promise to load (returns promise)
+    const groceriesJSON = await groceriesResponse.json();
+    const ratingsJSON = await ratingsResponse.json();
+  
+    res.json({ groceries: groceriesJSON, ratings: ratingsJSON});
+    } catch(e) {
+      res.sendStatus(500).json(e);
+    }
+
+//
+
+result =  await function()  //this await function returns a promise and we wait for it (Returns promise)
+//every away expression returns a promise
+e.g.
+
+
+*/
