@@ -6,6 +6,8 @@
 /*
 **Node is the JS engine. So the event loop runs the same
 
+ASYNC=NON BLOCKING 
+
 events, callback
 timeout, reading DB, reading/writing files
 API calls 
