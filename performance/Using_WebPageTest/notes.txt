@@ -1,0 +1,2 @@
+If you want to know the speed of a page, you should define exactly what you’re trying to measure. Second, even if the tool did report on the metric you care about, it is not necessarily representative of the page’s true speed. The true speed is that which the real users of the page experience. Real users live all over the world, use different technologies like device type or browser, and connect to the Internet differently. The true speed of this amalgamation is extremely hard to reflect in a single test.
+
