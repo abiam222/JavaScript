@@ -107,7 +107,6 @@ Hence callback
 2. Any function that is passed as an argument
 3. Callbacks are a way to make sure certain code doesn’t execute until other code has already finished execution. 
 (because JS is event driven and it doesn't wait for code that needs more time to be executed)
-(therefore this brings out the async and sync because if you don't have a callback it will run async else sync)
 e.g that's why in the below example "forEach" has a call back, if not we wouldn't get out
 data until we were finished and other code could have run after we made our call but our method wasn't
 displayed 
@@ -158,8 +157,7 @@ it as a callback */
 //cities2.forEach(callback); //also this code is shorter then doing call back twice too
 
 //citiesLoop(cities);
-//citiesLoop2(cities2);//runs first because there is no callback (forEach has callback,
-//that's why it always runs in order)
+//citiesLoop2(cities2);
 
 
 /*

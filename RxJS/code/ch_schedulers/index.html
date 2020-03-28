@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>This example uses the addEventListener() method to attach a click event to a button.</p>
+
+<button id="myBtn">Try it</button>
+
+<p><strong>Note:</strong> The addEventListener() method is not supported in Internet Explorer 8 and earlier versions.</p>
+
+<p id="demo"></p>
+<script src="https://unpkg.com/@reactivex/rxjs@5.5.12/dist/global/Rx.js" integrity=""
+crossorigin="anonymous"></script>
+
+<script>
+document.body.addEventListener("click", function(e){
+	document.getElementById("demo").innerHTML = e.clientX + " " + e.clientY;
+	console.log(e.clientX + " " + e.clientY)
+});
+
+Observable.fromEvent(document, ​ "click" ​)
+.filter(c => c.clientX > window.innerWidth / 2)
+.take(10) 
+.subscribe(c => console.log(c.clientX, c.clientY)); 
+</script>
+
+</body>
+</html>
+
+
+	

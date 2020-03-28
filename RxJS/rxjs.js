@@ -41,6 +41,7 @@ useless for recurrent events (e.g. mouse clicks, streams of data coming from ser
     that handles the stream of events as it comes )
 
 
+
 ////////////////////////////
 Event Emitters
 
@@ -51,6 +52,8 @@ Events force side effects (ignore their return values)
 Not first-class values (click events can't be passed as a param or manipulated)
 It's easy to miss events if we start litening too late
 
+
+
 //////////////////////
 Reactive Programming
 
@@ -59,11 +62,31 @@ e.g. Mouse clicks, network request, arrays of strings , etc
 
 Focuses on propagating changes without our having to explicitly how the propagation ahppens.
 
+========================
+
+An Observable represents a stream of data. Programs can be expressed largely as streams of data. 
+
+Reactive Programming - Let’s start by considering the quintessential example of a reactive
+system: the spreadsheet. We all have used them, but we rarely stop and
+think how shockingly intuitive they are. Let’s say we have a value in
+cell A1 of the spreadsheet. We can then reference it in other
+cells in the spreadsheet, and whenever we change A1, every cell
+depending on A1 will automatically update its own value.
+
+
+Your mouse becomes a database
+
+In reactive programming, we see mouse clicks as a continuous
+stream of values that we can query and manipulate. Thinking
+about a stream of values instead of discrete values opens up a
+whole new way to program, one in which we can manipulate entire
+sequences of values that haven’t been created yet.
+
 
 */
 
-
- const Rx = require('rxjs/Rx');
+    
+//  const Rx = require('rxjs/Rx');
 
 // const arr = [1,2,3]
 // const arr2 = [4,5,6]
