@@ -66,6 +66,7 @@ Focuses on propagating changes without our having to explicitly how the propagat
 
 An Observable represents a stream of data. Programs can be expressed largely as streams of data. 
 
+
 Reactive Programming - Let’s start by considering the quintessential example of a reactive
 system: the spreadsheet. We all have used them, but we rarely stop and
 think how shockingly intuitive they are. Let’s say we have a value in
@@ -82,8 +83,39 @@ about a stream of values instead of discrete values opens up a
 whole new way to program, one in which we can manipulate entire
 sequences of values that haven’t been created yet.
 
+Rx pattern = Observer + Iterator pattern
+RxJs is push-based (think push notification, server sends update to client instead
+    of client having to poll the server for these updates ).
+    Source of events (observable) will push values to consumer (subscriber) without
+    the consumer requesting the next value
+
+Subscriptions are the equivalent of listeners in Observer pattern.
+
+
+So far it doesn’t seem very different from the
+traditional Observer pattern. But actually there are two essential
+differences:
+An Observable doesn’t start streaming items until it has at least
+one Observer subscribed to it.
+Like iterators, an Observable can signal when the sequence is completed. 
+
+Observer interace contains 3 methods: - they are optional i believe
+next
+complete
+error
+
+Observables are just streams of events that we
+transform, combine, and query. It doesn’t matter whether we’re
+dealing with simple Ajax callbacks or processing gigabytes of data
+in Node.js. The way we declare our flows is the same. Once we think
+in streams, our programs become simpler.
+
+ Most used operators like any language with collection-processing are
+ map, filter, reduce
 
 */
+
+
 
     
 //  const Rx = require('rxjs/Rx');
