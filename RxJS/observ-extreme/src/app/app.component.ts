@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { fromEvent, Subscriber, merge } from 'rxjs';
-import { retry, map, catchError, filter, take, reduce, flatMap, concatAll} from "rxjs/operators";
+import { retry, map, catchError, filter, take, reduce, scan, flatMap, concatAll} from "rxjs/operators";
 import {
   throwError as observableThrowError,
   Observable,
@@ -11,9 +11,11 @@ import {
   pipe,
   bindNodeCallback,
   interval,
+  Subject
 } from "rxjs";
 import { IUser } from "src/app/interfaces/default.interface";
 import { isBuffer } from "util";
+import L from "leaflet";
 import { getOrCreateInjectable } from "@angular/core/src/render3/di";
 //check data.json file import data from './data.json' ?? would that work
 //import  *  as  data  from  './data.json';
@@ -96,7 +98,10 @@ export class AppComponent implements OnInit {
    // self.example3();
     //self.example5();
     //self.example6();
-    self.example7();
+    //self.example7();
+   // self.example8();
+  // self.earthquake();
+    self.example11();
   }
 
   getNewObservable() {
@@ -334,10 +339,15 @@ export class AppComponent implements OnInit {
   }
 
   //instead of Handling errors we are catching error
+  //catchError - instead of just breaking at first
+  //it goes all the way through and prints those objects
+  //until it breaks
   example7() {
     this.getJSON([ ​ ​ 
       '{"1": 1, "2": 2}' ​, ​ ​ 
-      '{"1": 1}' 
+      '{"1": 1}',
+      '{"success", true}',
+      '{"2": 2}'
     ])
     .pipe(
       catchError( err =>
@@ -350,92 +360,204 @@ export class AppComponent implements OnInit {
       json => console.log("Parsed JSON Example 7: ", json),
       err => console.log(err.message)
     );
+
+    /*catch is useful for reacting to errors in a
+    sequence, and it behaves much like the traditional
+    try/catch block. In some cases, though, it would be very
+    convenient to ignore an error that happens with an item in the Observable
+    and let the sequence continue. In those cases, we can use the
+    retry operator.*/
   }
 
-
-
-  getStockBookPromise() {
-    this.http
-      .get("https://api.iextrading.com/1.0/stock/aapl/book", {
-        responseType: "json",
-        observe: "response"
-      })
-      .toPromise()
-      .then(res => console.log(res));
-    //I can chain everything by the .then() function
-    //does not return an observable, returns a Promise
-  }
-
-  getStockBookObserv() {
-    this.http
-      .get("https://api.iextrading.com/1.0/stock/aapl/book", {
-        responseType: "json",
-        observe: "response"
-      })
+  //Retrying sequences
+  example8() {
+    //retry will always retry the whole observable sequence again
+    //even if some of the items didn't error
+    this.getJSON([ ​ ​ 
+      '{"1": 1, "2": 2}' ​, ​ ​ 
+      '{"1": 1}',
+      '{"success", true}',
+      '{"2": 2}'
+    ])
       .pipe(
-        //   // map(res => console.log(res))
-        catchError(e => {
-          throw new Error(e.message);
-        }),
-        map(res => console.log(res))
-      ) //observable as of now
-      // .subscribe(     //return that observable by subscribing to it
-      //   res => console.log(res)
-      // )
-      .subscribe(); //need to subscribe to pipe to get details
+        retry(5)
+      )
+      .subscribe(
+        xhr => console.log(xhr),
+        err => console.log("ERROR: ", err)
+      );
   }
 
-  getExample1() {
-    const source = range(0, 10);
+  // getStockBookPromise() {
+  //   this.http
+  //     .get("https://api.iextrading.com/1.0/stock/aapl/book", {
+  //       responseType: "json",
+  //       observe: "response"
+  //     })
+  //     .toPromise()
+  //     .then(res => console.log(res));
+  //   //I can chain everything by the .then() function
+  //   //does not return an observable, returns a Promise
+  // }
 
-    source.pipe(filter(x => x % 2 == 0)).subscribe(x => console.log(x));
-  }
+  // getStockBookObserv() {
+  //   this.http
+  //     .get("https://api.iextrading.com/1.0/stock/aapl/book", {
+  //       responseType: "json",
+  //       observe: "response"
+  //     })
+  //     .pipe(
+  //       //   // map(res => console.log(res))
+  //       catchError(e => {
+  //         throw new Error(e.message);
+  //       }),
+  //       map(res => console.log(res))
+  //     ) //observable as of now
+  //     // .subscribe(     //return that observable by subscribing to it
+  //     //   res => console.log(res)
+  //     // )
+  //     .subscribe(); //need to subscribe to pipe to get details
+  // }
 
-  getEnumExample() {
-    /*
-    enumerations to describe finite sets of discrete values.
-    Discrete, Immutable, Cardinality
-    */
-    /* Enums are immutable (are readonly in typescript)
-    If you wanted to do the same thing but with an object you would need 
-    to use the Object.freeze() method. 
-    */
-    enum Compass {
-      North, East, South, West
+  // getEnumExample() {
+  //   /*
+  //   enumerations to describe finite sets of discrete values.
+  //   Discrete, Immutable, Cardinality
+  //   */
+  //   /* Enums are immutable (are readonly in typescript)
+  //   If you wanted to do the same thing but with an object you would need 
+  //   to use the Object.freeze() method. 
+  //   */
+  //   enum Compass {
+  //     North, East, South, West
+  //   }
+
+  //   //we can make it start with a certain value
+  //   /*
+  //   enum Compass { North=2, East, ...}
+  //   write const enum Compass { ... } it will remove this from compilation
+
+  //   **Note some things don't work with strings (I think initializing string with below code )
+  //   */
+
+  //   /*
+  //   Typescript also supports
+
+  //   TypeScript also supports String enums, Heterogeneous enums, Union enums, and Ambient enums
+  //   */
+  //   const foo : Compass = Compass.North;
+  //   console.log('in this getEnumExample as well')
+  //   console.log(Compass.North)
+  //   console.log(Compass.West)
+  // }
+
+  earthquake() {
+    const QUAKE_URL = `http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojsonp`;
+    //loadJSONP(QUAKE_URL);
+    function loadJSONP(url) {
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = url;
+
+      const head = document.getElementsByTagName("head")[0];
+      head.appendChild(script);
     }
 
-    //we can make it start with a certain value
-    /*
-    enum Compass { North=2, East, ...}
-    write const enum Compass { ... } it will remove this from compilation
+    const mapContainer = document.createElement("div");
+    mapContainer.id = "map";
+    document.body.appendChild(mapContainer);
 
-    **Note some things don't work with strings (I think initializing string with below code )
-    */
+    const map = L.map("map").setView([33.858631, -118.279602], 7);
+    L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png").addTo(map);
 
-    /*
-    Typescript also supports
+    ​// eqfeed_callback( ​{ ​ ​ "type" ​: ​ "FeatureCollection" ​, ​ ​ "metadata" ​: { ​ ​ "generated" ​: 1408030886000, ​ ​ "url" ​: ​ "http://earthquake.usgs.gov/earthquakes/..." ​, 
 
-    TypeScript also supports String enums, Heterogeneous enums, Union enums, and Ambient enums
-    */
-    const foo : Compass = Compass.North;
-    console.log('in this getEnumExample as well')
-    console.log(Compass.North)
-    console.log(Compass.West)
+    // ​ const ​quakes$ = Observable.create(
+    //   observer => { ​ 
+    //     window.eqfeed_callback = response => { ​ 
+    //       response.features.forEach(observer.next); ​ 
+    //     }; ​ ​ loadJSONP(QUAKE_URL); ​ }); ​ ​ 
+        
+    //   quakes$.subscribe(
+    //     quake => { ​ 
+    //       const ​ coords = quake.geometry.coordinates; ​ ​ 
+    //       const ​ size = quake.properties.mag * 10000; ​ ​ 
+    //       L.circle([coords[1], coords[0]], size).addTo(map); ​ 
+    //   }); 
   }
 
+  example10() {
+    let evenTicks = 0;
+
+    function updateDistance(i) {
+      if (i%2===0) evenTicks += 1;
+      return evenTicks;
+    }
+    
+    const ticksObservable = interval(1000)
+    .pipe(
+      //map(updateDistance)
+      scan(updateDistance, 0)//using scan we avoid external state
+    )
+
+    ticksObservable.subscribe(() => {
+      console.log(`Subscriber 1 - evenTicks: ${evenTicks} so far`);
+    });
+
+    ticksObservable.subscribe(() => {
+      console.log(`Subscriber 2 - evenTicks: ${evenTicks} so far`);
+    });
+
+    //we can avoid relying on external statebundleRenderer.renderToStream
+    //if we need to cache values RxJS subject class can help a lot
+    //when we need to keep track of prev state we can use methods like scan
+  }
+
+  /* 
+  Observable pipelines look extremely similar to array chains, but their
+  similarities end here. In an Observable, nothing ever happens until we
+  subscribe to it, no matter how many queries and transformations we
+  apply to it. When we chain a transformation like map ,
+  we’re composing a single function that will operate on every
+  item of the array once. So, in the preceding code, this is what will
+  happen:
+
+  stringObservable$ ​ .map(str => str.toUpperCase()) ​ 
+  .filter(​ /^ ​​ [ ​​ A-Z ​​ ] ​​ +$/ ​.test) ​
+  .take(5) ​ .subscribe(str => console.log(str)); 
+  take makes the Observable emit only the first
+  n items we specify. In our case,
+  n is five, so 
+
+  out of the thousand strings, we’ll
+  receive only the first five. The cool part is that our code will never
+  traverse all the items; it will apply our transformations to only the
+  first five.
+  This makes the developer’s life much easier. You can rest assured
+  that when manipulating sequences, RxJS will do only as much work as necessary. This way of operating is called lazy
+  evaluation , and it is very common in functional languages such as
+  Haskell and Miranda.
+  */
+
+  example11() {
+    const ​ subject$ = ​ new ​ Subject(); ​ ​ 
+    
+    interval(300) ​ 
+    .pipe(
+      map(v => ​ `Interval message # ​${v}​ `​), 
+      take(5) 
+    )
+    .subscribe(subject$); ​ ​ 
+    
+    subject$.subscribe( ​ 
+      next => console.log(​ `Next: ​${next}​ ` ​), ​ 
+      error => console.log(​ `Error: ​${error.message}​ ` ​), ​ 
+      () => console.log(​ 'Completed!' ​) ​ 
+    ); ​ ​ 
+      
+    subject$.next(​ 'Our message #1' ​); ​ 
+    subject$.next(​ 'Our message #2' ​); ​ ​ 
+    setTimeout(subject$.complete, 1000); 
+  }
 
 }
-
-// public get<T>(url: string, id?: string): Observable<T> {
-//   return this.http
-//     .get(this.buildUrl(url, null), {
-//       responseType: "json",
-//       observe: "response"
-//     })
-//     .pipe(
-//       catchError(this.handleError),
-//       map(resp => <T>resp.body)
-//     );
-// }
-
-
