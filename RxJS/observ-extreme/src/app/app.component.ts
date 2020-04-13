@@ -85,7 +85,7 @@ export class AppComponent implements OnInit {
     //self.getNewObservable();
     //self.getNewArrayObservable();
     //self.getXYPointJS();
-    //self.getXYPointObservable();
+    self.getXYPointObservable();
     //self.createObservable();
     //self.getDataExample1();
     //self.getObsUsingFrom();
@@ -101,7 +101,54 @@ export class AppComponent implements OnInit {
     //self.example7();
    // self.example8();
   // self.earthquake();
-    self.example11();
+   //self.example11();
+   //self.firstExample();
+   //self.secondExample();
+  }
+  //1667 37
+  //
+
+  firstExample() {
+    let ​ clicks = 0; //state​
+    
+    const ​ registerClicks = e => { ​ 
+      console.log(e.clientX, e.clientY); ​ 
+    }; 
+
+    document.addEventListener(​ "click" ​, e => { ​ ​ 
+      console.log(clicks);
+      if ​ (clicks < 10) { ​ ​ 
+        if ​ (e.clientX > window.innerWidth / 2) { ​ 
+          console.log(e.clientX, e.clientY); ​ 
+          clicks += 1; ​ 
+        } ​ 
+      } ​ else ​ { ​ 
+        document.removeEventListener(​ "click" ​, registerClicks); ​ 
+      } ​ 
+    }); 
+  }
+
+  secondExample() {
+    let obj;
+
+    fromEvent(document, ​ "click" ​) ​ 
+      .pipe(
+        filter( (c:MouseEvent) => c.clientX > window.innerWidth / 2),
+        take(10)
+      )
+    ​ .subscribe( (c:MouseEvent) => {
+      console.log(c.clientX, c.clientY)
+      obj =  c;
+      },
+      () => { //error
+        //console.log('uumm')
+        //console.log(obj)
+      },
+      () => { //next is the thirs
+        console.log('uumm')
+        console.log(obj)
+      }
+    ) 
   }
 
   getNewObservable() {
@@ -127,7 +174,7 @@ export class AppComponent implements OnInit {
   }
 
   public  getXYPointObservable() {
-    let obj;
+    let arrObj=[];
     //observable from JS event
     fromEvent(document, ​ "click" ​)
       .pipe( ​ 
@@ -137,9 +184,10 @@ export class AppComponent implements OnInit {
       .subscribe(
         (c:MouseEvent) => {
           console.log(c.clientX, c.clientY);
-          obj = c;
+          arrObj.push([c.clientX, c.clientY]);
         },
-        () => (console.log(obj))
+        (e) => (console.log(e)),//won't print this is error
+        () => { console.log(arrObj) }//not error
         ); //subscribe to observable
         //console.log(obj)
         //I want to see if I can print the whole object with all the data
