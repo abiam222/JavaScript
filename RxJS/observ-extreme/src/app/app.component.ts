@@ -1,22 +1,30 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { fromEvent, Subscriber, merge } from 'rxjs';
-import { retry, map, catchError, filter, take, reduce, scan, flatMap, concatAll} from "rxjs/operators";
+import { retry, map, catchError, filter, take, reduce, scan, flatMap, concatAll, delay} from "rxjs/operators";
 import {
   throwError as observableThrowError,
   Observable,
   of,
   range,
   from,
+  fromEvent,
+  Subscriber,
+  merge,
+  AsyncSubject,
   pipe,
+  SchedulerLike,
   bindNodeCallback,
+  ReplaySubject,
   interval,
-  Subject
+  Subject,
+  BehaviorSubject,
+  asyncScheduler
 } from "rxjs";
 import { IUser } from "src/app/interfaces/default.interface";
 import { isBuffer } from "util";
 import L from "leaflet";
 import { getOrCreateInjectable } from "@angular/core/src/render3/di";
+import { ObserveOnMessage } from 'rxjs/internal/operators/observeOn';
 //check data.json file import data from './data.json' ?? would that work
 //import  *  as  data  from  './data.json';
 
@@ -85,7 +93,7 @@ export class AppComponent implements OnInit {
     //self.getNewObservable();
     //self.getNewArrayObservable();
     //self.getXYPointJS();
-    self.getXYPointObservable();
+   // self.getXYPointObservable();
     //self.createObservable();
     //self.getDataExample1();
     //self.getObsUsingFrom();
@@ -104,6 +112,13 @@ export class AppComponent implements OnInit {
    //self.example11();
    //self.firstExample();
    //self.secondExample();
+   //self.example10();
+   //self.example11();
+  // self.example12();
+   //self.example13();
+   //self.example14();
+   //self.example15()
+   self.example16()
   }
   //1667 37
   //
@@ -534,6 +549,9 @@ export class AppComponent implements OnInit {
     //   }); 
   }
 
+  //Ch3 Concurrency
+  //Concurrency is the art of doing several things at the same time, 
+  //correctly and efficiently
   example10() {
     let evenTicks = 0;
 
@@ -546,6 +564,8 @@ export class AppComponent implements OnInit {
     .pipe(
       //map(updateDistance)
       scan(updateDistance, 0)//using scan we avoid external state
+      //we pass the accumulated count of even ticks to updateDistance
+      //instead of relying on an external varibale to keep the accumulated value
     )
 
     ticksObservable.subscribe(() => {
@@ -562,33 +582,55 @@ export class AppComponent implements OnInit {
   }
 
   /* 
-  Observable pipelines look extremely similar to array chains, but their
-  similarities end here. In an Observable, nothing ever happens until we
-  subscribe to it, no matter how many queries and transformations we
-  apply to it. When we chain a transformation like map ,
-  we’re composing a single function that will operate on every
-  item of the array once. So, in the preceding code, this is what will
-  happen:
+  Observable pipelines, on the other hand, don't create intermediate Observables
+  and apply all operations to each elements in one go.
 
-  stringObservable$ ​ .map(str => str.toUpperCase()) ​ 
-  .filter(​ /^ ​​ [ ​​ A-Z ​​ ] ​​ +$/ ​.test) ​
-  .take(5) ​ .subscribe(str => console.log(str)); 
-  take makes the Observable emit only the first
-  n items we specify. In our case,
-  n is five, so 
+  stringArray //array of 1000 strings
+  .map(str => str.toUpperCase())
+  .filter(/^ ​​ [ ​​ A-Z ​​ ] ​​ +$/ ​.test)
+  .forEach(str=>console.log(str))
+  *Iterate through the array and create a new array with all items uppercase
+  *Iterate through the uppercase array, creating another array with 1000 elements
+  *Iterate through the filterd array and log each result to the console
+  We are iterating 3 times and created two new big arrays. This is far from efficient
+  You sholdn't program this way if youre concered about performance or dealing with big sequences of items
 
-  out of the thousand strings, we’ll
-  receive only the first five. The cool part is that our code will never
-  traverse all the items; it will apply our transformations to only the
-  first five.
-  This makes the developer’s life much easier. You can rest assured
-  that when manipulating sequences, RxJS will do only as much work as necessary. This way of operating is called lazy
-  evaluation , and it is very common in functional languages such as
-  Haskell and Miranda.
+  But
+
+  using Observables
+  
+  stringObservable$ ​ 
+  .pipe(
+    map(str => str.toUpperCase()) ​ 
+    filter(​ /^ ​​ [ ​​ A-Z ​​ ] ​​ +$/ ​.test) ​
+  )
+  .subscribe(str => console.log(str)); 
+  *Create an uppercase function that will be applied to each item of the Observable
+  and return an Observable that will emit these new items, whenever an Observer subscribes to it
+  *Compose a filter function with the previous uppercase function and return an 
+  Observable that will emit the new items, uppercase and filtered,
+  *Trigger the Observable to emit items, going through all of them only once and 
+  applying the transformations we defined once per item
+
+    if we use
+    take(5) 
+    only shows top 5
+    It will never traverse all the items
+
   */
 
+  /*
+ A Subject is a type that implements both Observer and Observable types. As
+ an Observer, it can subscribe to Observables, and as an Observable it can
+ produce values and have Observers subscribe to it.
+
+ Why use Subject? To multicast!
+ Observable by default is unicast
+
+ Subjects are like EventEmitters, they maintain a registry of many listeners
+ */
   example11() {
-    const ​ subject$ = ​ new ​ Subject(); ​ ​ 
+    const ​ subject$ = ​ new ​Subject(); ​ ​ 
     
     interval(300) ​ 
     .pipe(
@@ -607,5 +649,192 @@ export class AppComponent implements OnInit {
     subject$.next(​ 'Our message #2' ​); ​ ​ 
     setTimeout(subject$.complete, 1000); 
   }
+
+  example12() {
+    const ​ delayedRange$ = range(0,5).pipe( delay(1000) );
+    //AsyncSubject emits last value of a sequence only if the sequence
+    //completes
+    //const subject$ = new AsyncSubject(); //4
+    const subject$ = new Subject(); //0,1,2,3,4
+    
+    
+    
+    delayedRange$.subscribe(subject$);​ ​ 
+    
+    subject$.subscribe(
+      next => console.log('Value:', next),
+      error => console.log('Error:', error),
+      () => console.log('Completed.')
+    ) 
+    
+    //ORRRRRRRR
+
+    // const Observ = range(0,5)
+    // .pipe(
+    //   delay(1000)
+    // )
+    // .subscribe( 
+    //   next => console.log('Value:', next),
+    //   error => console.log('Error:', error),
+    //   () => console.log('Completed.')
+    // );
+
+    //ORRRRRRRRRR
+
+    // const Observ = range(0,5)
+    //   .pipe(
+    //     delay(1000)
+    //   )
+
+    // Observ.subscribe( 
+    //   next => console.log('Value:', next),
+    //   error => console.log('Error:', error),
+    //   () => console.log('Completed.')
+    // );
+    ​ ​ 
+  }
+
+  //Subject multicast (multiple subscriptions getting same data)
+  example13() {
+    const subject = new Subject();
+
+    subject.subscribe((data) => {
+      console.log(`Subscriber 1 - ${data}`);
+    });
+
+    subject.subscribe((data) => {
+      console.log(`Subscriber 2 - ${data}`);
+    });
+
+    subject.next(Math.random());
+  }
+
+  //Whereas Observables are solely data producers,
+  //Subjects can both be used as a data producer 
+  //and a data consumer. By using Subjects as a data 
+  //consumer you can use them to convert Observables 
+  //from unicast to multicast. Here’s a demonstration of that:
+  //LIKE I HAVE IN EXAMPLE 12
+
+  //If you ever encounter the scenario where your Observable 
+  //subscriptions receive different values, use Subjects. 
+  //Subjects will make sure each subscription gets the exact 
+  //same value as the Observable execution is shared among the 
+  //subscribers. Subjects come in different flavours, i will soon 
+  //write about their differences.
+
+  /*When an Observer subscribes to a BehaviorSubject , it
+  receives the last emitted value and then all the subsequent values.
+  BehaviorSubject requires that we provide a starting
+  value, so that all Observers will always receive a value when
+  they subscribe to a BehaviorSubject .
+  Imagine we want to retrieve a remote file and print its
+  contents on an HTML page, but we want placeholder text
+  while we wait for the contents. We can use a
+  BehaviorSubject for this:
+  */
+//  example14() {
+//   const ​ delayedRange$ = range(0,5).pipe( delay(1000) );
+//   const subject$ = new BehaviorSubject('Waiting for subject'); //0,1,2,3,4
+  
+//   subject$.subscribe(
+//     next => console.log('Value:', next),
+//     error => console.log('Error:', error),
+//     () => console.log('Completed.')
+//   ) 
+
+//    ajax('/content').subscribe(subject$);​ ​ 
+  /*BehaviorSubject guarantees that there will always
+  be at least one value emitted, because we provide a default value
+  in its constructor. Once the BehaviorSubject completes it won’t emit any more values, freeing the memory used
+  by the cached value.*/
+//  }
+
+/*
+Does That Mean AsyncSubject Acts Like a Promise? Indeed.
+AsyncSubject represents the result of an asynchronous action, and you can use it as a substitute for a promise.
+The difference internally is that a promise will only ever process a
+single value, whereas AsyncSubject processes all values in a
+sequence, only ever emitting (and caching) the last one.
+Being able to so easily simulate promises shows the flexibility
+of the RxJS model. (Even without AsyncSubject , it
+would be pretty easy to simulate a promise using Observables.)
+
+
+*/
+
+/*
+e.
+ReplaySubject A ReplaySubject caches its values and re-emits them to
+any Observer that subscribes late to it. Unlike with
+AsyncSubject , the sequence doesn’t need to be completed
+for this to happen.
+
+f.
+ReplaySubject is useful to make sure that
+Observers get all the values emitted by an Observable from the
+start. It spares us from writing messy code that caches previous
+values, saving us from nasty concurrency-related bugs.
+Of course, to accomplish that behavior
+ReplaySubject caches all values in
+memory. To prevent it from using too much memory, we can limit the
+amount of data it stores by buffer size or window of time, or by
+passing particular parameters to the constructor.
+The first parameter to the constructor of ReplaySubject takes a number that represents how many values we want to buffer:
+
+Or we can do ReplaySubject(null, 200) this buffers in 200 milliseconds
+ 
+*/
+example15() {
+  //const ​ subject$ = ​ new ​ReplaySubject();
+  const subject$ = new ReplaySubject(2);//from f
+  //const ​ subject$ = ​ new ​Subject(); ​ ​ 
+  subject$.next(1); 
+  subject$.next(5); ​ ​ 
+  
+  subject$.subscribe(n => { ​ 
+    console.log(​ 'Received value:' ​, n); ​ 
+  }); ​ ​ 
+  
+  subject$.next(2); ​ 
+  subject$.next(3); 
+}
+
+ /*
+Hot and Cold Observables The
+concepts “hot” and “cold” when applied
+to Observables are often a topic of confusion in the Rx world,
+but they are actually easy to grasp. “Hot” Observables
+emit values regardless of having any Subscribers. On
+the other hand, “cold” Observables emit the entire
+sequence of values from the start to every Subscriber.
+ 
+/*
+
+Schedulers are a powerful mechanism to precisely manage concurrency in your applications. They give you fine-grained control over how an Observable emits notifications by allowing you to change their concurrency model as you go.
+In this chapter you’ll learn how to use Schedulers and apply them in common scenarios. We’ll focus on testing, where Schedulers are especially useful, and you’ll learn how to make your own Schedulers.
+
+A Scheduler is a mechanism to “schedule” an action to happen in the
+future.
+Each operator in RxJS uses one Scheduler internally, selected to provide
+the best performance in the most likely scenario.
+
+
+*/
+
+  example16() {
+    const itemArray = [];
+
+    for (let i=0;i<1000;i++) {
+      itemArray.push(i);
+    }
+
+    const timeStart = Date.now();
+    from(itemArray, asyncScheduler).subscribe(null, null, ()=> {
+      console.log(`Total time: ${Date.now() - timeStart}ms`);
+    });
+  }
+
+
 
 }
