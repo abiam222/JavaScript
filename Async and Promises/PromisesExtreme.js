@@ -2,9 +2,23 @@
 //https://stackoverflow.com/questions/37364973/what-is-the-difference-between-promises-and-observables
 //https://tylermcginnis.com/async-javascript-from-callbacks-to-promises-to-async-await/
 
-//JS is single threaded async (not really asyn though)
+//
 /*
 **Node is the JS engine. So the event loop runs the same
+
+JS is single threaded async (not really asyn though)
+ASYN because is non-blocking. So if you call an AJAX it will
+continue with the code until the API call comes back and runs
+that. Hence you need callbacks so that doesn't happen and yor
+code can run "sync"
+
+//what happens if
+// api('asdfsf', function callback(
+//	api('adfasf', function callback)
+//))
+//how does the pool and queue work? is it FIFO
+//in the sense of callback or messages coming back 
+//is it in perfect order?
 
 ASYNC=NON BLOCKING 
 
@@ -79,7 +93,7 @@ function listener(){
 
 xhr.addEventListener('load', listener);
 xhr.addEventListener('error', listener);
-*/
+
  
 
 
@@ -112,14 +126,14 @@ data until we were finished and other code could have run after we made our call
 displayed 
 */
 
-// var cities = [ 'Tokyo', 
-// 				'London', 
-// 				'Boston', 
-// 				'Berlin', 
-// 				'Chicago',
-// 				'New York'];
+var cities = [ 'Tokyo', 
+				'London', 
+				'Boston', 
+				'Berlin', 
+				'Chicago',
+				'New York'];
 
-// var cities2 = [ 'Los Angeles'];
+var cities2 = [ 'Los Angeles'];
 
 
 // cities.forEach(function callback(city){
@@ -138,6 +152,11 @@ it as a callback */
 // function callback(city){
 // 	console.log(city);
 // }
+
+
+//Example this runs LA first because since JS in naturally ASync (non blocking)
+//it runs citiesLoop2 because citiesLoop is waiting 500 seconds, to stop this
+//and run in order, you have to use a callback
 // function citiesLoop(c) {
 // 	setTimeout(function(){
 // 		for (var i=0;i<c.length;i++){
@@ -147,17 +166,29 @@ it as a callback */
 	
 // }
 
+// function citiesLoop3(x) {
+	
+// }
+
+// function cd(c) {
+// 		setTimeout(function(){
+// 		for (var i=0;i<c.length;i++){
+// 			console.log(c[i])
+// 		}
+// 	}, 500)
+// }
+
+
+
 // function citiesLoop2(c) {
 // 	for (var i=0;i<c.length;i++){
 // 		console.log(c[i])
 // 	}
 // }
 
-//cities.forEach(callback);
-//cities2.forEach(callback); //also this code is shorter then doing call back twice too
-
 //citiesLoop(cities);
-//citiesLoop2(cities2);
+// citiesLoop3(cd(cities))
+// citiesLoop2(cities2);
 
 
 /*

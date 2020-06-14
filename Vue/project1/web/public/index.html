@@ -14,12 +14,14 @@
 					v-bind:key="item.id"
 		  		></todo-item>
 			</ol>
+			<button v-bind:disabled="isButtonDisabled">Button</button>
 		</div>
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
 	<script src="https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.5.5/rxjs.umd.js"></script>
 	<script>
+		//computed = caching vs methods = non-caching
 		Vue.component('todo-item', {
         	props:['todo'],
         	template: '<li>{{ todo.text }}</li>'
@@ -33,7 +35,8 @@
               		{ id: 1, text: 'Cheese' },
               		{ id: 2, text: 'Whatever else humans are supposed to eat'}
 				],
-				updatedList: []
+				updatedList: [],
+				isButtonDisabled: true
 		  	},
 			created() {
     			axios
